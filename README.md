@@ -1,4 +1,5 @@
 # shortener
 a url shortener create by tim
 
-- (clicky)[main.py]
+this takes/send data from tim's online database (on neon)
+

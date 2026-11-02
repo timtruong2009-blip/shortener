@@ -1,4 +1,3 @@
-import base64
 import sqlalchemy as sa
 import os
 import secrets
