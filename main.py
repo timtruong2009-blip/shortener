@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, Form, HTTPException
+from fastapi import FastAPI, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse, HTMLResponse
 from pydantic import BaseModel
 import uvicorn
@@ -24,16 +24,13 @@ def home():
     """
 
 @app.post("/shorten", response_class=HTMLResponse)
-def shorten(url: str = Form()):
+def shorten(request: Request, url: str = Form()):
     check = sh.check_url_in_db(url)
-    if check == None:
-        return "http://127.0.0.1:8000/" + sh.send_back_new_short_link(url)
+    if check is None:
+        return f"{request.base_url}{sh.send_back_new_short_link(url)}"
     else:
         take_the_long_ass_spaces_out = check.strip()
-        return "http://127.0.0.1:8000/" + take_the_long_ass_spaces_out
-
-
-
+        return f"{request.base_url}{take_the_long_ass_spaces_out}"
 
 
 
@@ -45,5 +42,5 @@ def somewhere(link):
     return RedirectResponse(original, status_code=301)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
